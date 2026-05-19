@@ -1,46 +1,37 @@
 class Solution {
 public:
-
-    bool valid(string &s){
-        vector<int> freq(26,0);
-
-        for(char ch : s){
-
-            if(freq[ch-'a'] > 0){
-                return false;
+    void f(int i, vector<string>&arr, string ans,int &mx){
+        vector<int>freq(27,0);
+        bool flag = false;
+         for(int i = 0; i<ans.size(); i++){
+            if(freq[ans[i]-'a']>0){
+                flag = true;
+                break;
             }
-
-            freq[ch-'a']++;
+            else{
+                freq[ans[i]-'a']++;
+            }
+         }
+        if(flag==false){
+           if(ans.size()>mx){
+              mx = ans.size();
+           }
         }
-
-        return true;
+        if(i==arr.size()){
+            return ;
+        }
+     
+     
+        f(i+1,arr,ans+arr[i],mx);
+     
+        f(i+1,arr,ans,mx);
     }
-
-    void f(int i, vector<string>& arr, string ans, int &mx){
-
-        if(!valid(ans)){
-            return;
-        }
-
-        mx = max(mx, (int)ans.size());
-
-        if(i == arr.size()){
-            return;
-        }
-
-        // take
-        f(i+1, arr, ans + arr[i], mx);
-
-        // not take
-        f(i+1, arr, ans, mx);
-    }
-
     int maxLength(vector<string>& arr) {
-
         int mx = 0;
-
-        f(0, arr, "", mx);
-
+        string ans = "";
+        f(0,arr,ans,mx);
         return mx;
+
+        
     }
 };
