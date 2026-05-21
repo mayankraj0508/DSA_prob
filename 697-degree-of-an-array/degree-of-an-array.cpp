@@ -1,40 +1,37 @@
 class Solution {
 public:
     int findShortestSubArray(vector<int>& nums) {
-        unordered_map<int,int>m;
-        vector<int>v;
-        int mxfreq = 1;
-        for(int i =0; i<nums.size(); i++){
-            m[nums[i]]++;
-            mxfreq = max(mxfreq,m[nums[i]]);
+
+        unordered_map<int,int> freq;
+        unordered_map<int,int> first;
+        unordered_map<int,int> last;
+
+        int degree = 0;
+
+        for(int i=0; i<nums.size(); i++){
+
+            if(first.find(nums[i]) == first.end()){
+                first[nums[i]] = i;
+            }
+
+            last[nums[i]] = i;
+
+            freq[nums[i]]++;
+
+            degree = max(degree, freq[nums[i]]);
         }
-        for(auto x:m){
-            if(x.second==mxfreq){
-                v.push_back(x.first);
+
+        int ans = INT_MAX;
+
+        for(auto x : freq){
+
+            if(x.second == degree){
+
+                ans = min(ans,
+                          last[x.first] - first[x.first] + 1);
             }
         }
-        for(int i=0; i<v.size(); i++){
-            cout<<v[i]<<" ";
-        }
-        int size = INT_MAX;;
-        for(int i=0; i<v.size(); i++){
-            bool flag = true;
-            int first = 0;
-            int last = 0;
-            for(int j=0; j<nums.size(); j++){
-                if(nums[j]==v[i] && flag){
-                    first = j;
-                    flag = false;
-                }
-                else if(nums[j]==v[i] && flag==false){
-                    last = j;
-                }
-            }
-            if(last==0){
-                last=first;
-            }
-            size = min(size,last-first+1);
-        }
-        return size;
+
+        return ans;
     }
 };
