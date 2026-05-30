@@ -28,8 +28,6 @@ public:
 
         int a = -1;
         int b = -1;
-
-        // second pass for median
         for(int i = 0; i < 256; i++) {
 
             curr += count[i];
