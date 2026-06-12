@@ -7,17 +7,22 @@ public:
         unordered_map<int,int>m;
         while(j<s.size()){
             m[s[j]]++;  
-               while(m.size()>k && i<s.size()){
+         
+         
+       while(m.size()>k && i<s.size()){
                 m[s[i]]--;
                 if(m[s[i]]==0){
                     m.erase(s[i]);
                 }
                 i++;
-            }
-            if(m.size()<=k){
-                ans = ans+j-i+1;
-            }
-            j++;
+             }
+             if(m.size()<=k ){
+                  ans = ans+j-i+1;
+
+             }
+             j++;
+             
+    
          
         }
         return ans;
