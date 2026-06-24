@@ -1,31 +1,32 @@
 class Solution {
 public:
     int candy(vector<int>& rating) {
-        int n = rating.size();
-         vector<int>left(n);
-         left[0] = 1;
-         for(int i =1; i<n; i++){
-              if(rating[i]>rating[i-1]){
-                left[i] = left[i-1]+1;
-              }
-              else{
-                left[i] = 1;
-              }
-         }
-         int sum  = 0;
-        int  curr = 1;
-        sum  = max(curr,left[n-1]);
-           for(int i =n-2; i>=0; i--){
-              if(rating[i]>rating[i+1]){
-                curr = curr+1;
-                sum  = sum + max(left[i],curr);
-              }
-              else{
-                 curr = 1;
-                 sum  = sum + max(left[i],curr);
-              }
-         }
-       
-         return sum  ;
+        //most ptimal approach-- slope approach 
+        int sum  = 1;
+        int i =1;
+        while(i<rating.size()){
+            if(rating[i]==rating[i-1]){
+                sum++;
+                i++;
+                continue;
+            }
+            int peak = 1;
+            while(i<rating.size() && rating[i]>rating[i-1]){
+                peak++;
+                sum  = sum + peak;
+                i++;
+            }
+            int down  = 1;
+            while(i<rating.size() && rating[i]<rating[i-1]){
+                sum  = sum +down;
+                down++;
+                i++;
+            }
+            if(down>peak){
+                sum   = sum + down-peak;
+            }
+        }
+        return sum ;
+
      }
 };
