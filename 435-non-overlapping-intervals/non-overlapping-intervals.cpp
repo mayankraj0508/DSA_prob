@@ -16,12 +16,13 @@ public:
             if(s>=start && e<=end){
                 count++;
                 end   = e;
+                start  = s;
             }
             //case 2 when half of this interval lies within my interval
 
             else if(s>=start && s<end && e>=end){
                 count++;
-                end  = min(e,end);
+                //end  = min(e,end);
             }
             else{
                 start  = s;
