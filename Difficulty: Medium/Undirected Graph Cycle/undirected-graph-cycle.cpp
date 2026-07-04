@@ -27,6 +27,23 @@ class Solution {
        }
        return false;
     }
+
+    bool dfs(vector<vector<int>>&graph, int i,int a,int parent,unordered_set<int>&visited){
+        visited.insert(i);
+        for(int j = 0; j<graph[i].size(); j++){
+            if(graph[i][j]==a && parent!=a){
+                return true;
+            }
+            else {
+                if(visited.find(graph[i][j])==visited.end()){
+                    if(dfs(graph,graph[i][j],a,i,visited)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     bool isCycle(int V, vector<vector<int>>& edges) {
         // Code here
         vector<vector<int>>graph(V);
@@ -36,12 +53,20 @@ class Solution {
             graph[u].push_back(v);
             graph[v].push_back(u);
         }
-        for(int i = 0; i<V; i++){
-            if(visited.find(i)==visited.end()){
-                if(bfs(i,V,graph)){
+        // for(int i = 0; i<V; i++){
+        //     if(visited.find(i)==visited.end()){
+        //         if(bfs(i,V,graph)){
+        //             return true;
+        //         }
+        //     }
+        // }
+          for(int i = 0; i<V; i++){
+        
+                unordered_set<int>visited;
+                if(dfs(graph,i,i,-1,visited)){
                     return true;
                 }
-            }
+            
         }
         return false;
         
