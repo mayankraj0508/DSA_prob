@@ -10,7 +10,7 @@ public:
 
         }
         else{
-            return min(f(nums,i+1,j,count+1)-nums[i],f(nums,i,j-1,count+1)-nums[j]);
+            return min(f(nums,i+1,j,count+1),f(nums,i,j-1,count+1));
         }
 
     }
@@ -22,6 +22,6 @@ public:
         int p1 = f(nums,0,nums.size()-1,0);
         int p2 = sum-p1;
         cout<<p1;
-        return p1>=0;  
+        return p1>=p2;  
     }
 };
