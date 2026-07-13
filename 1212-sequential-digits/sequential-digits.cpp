@@ -12,7 +12,7 @@ public:
             int prev  = 0;
             int size = 0;
             bool flag  = false;
-            bool flag2 = false;
+
             while(size<xx){
                 int value = ch-'0' + prev;
                 if(value==10){
@@ -27,9 +27,7 @@ public:
             if(num>=low && num<=high && flag==false){
                 ans.push_back(num);
             }
-            // else if(flag==false){
-            //     break;
-            // }
+        
             
             temp = "";
              ch++;
