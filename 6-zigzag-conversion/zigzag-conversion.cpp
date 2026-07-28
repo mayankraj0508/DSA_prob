@@ -1,30 +1,70 @@
 class Solution {
 public:
     string convert(string s, int numRows) {
-
-        vector<string>temp(numRows,"");
-        int i =0; 
-        int idx= 0;
-        if(numRows==1){
+        int n  = s.size();
+         if(numRows==1){
             return s;
-        }
-        while(i<s.size()){
+         }
+        int ele =2*(numRows-1);
+        int cycle = n/ele;
+        int rem   = n%ele;
+    
+     
+        int col  = (numRows-1)*cycle;
+           if(rem!=0){
+            if(rem<=numRows){
+                col++;
 
-            for(int k = idx; k<numRows && i<s.size(); k++){
-                temp[k]  = temp[k]+s[i];
-                i++;
             }
-            idx = numRows-2;
-            for(int k =idx; k>=0 && i<s.size(); k--){
-                temp[k] = temp[k]+s[i];
-                i++;
+            else{
+                col+=2;
             }
-            idx = 1;
         }
-        string ans = "";
-        for(int i =0; i<temp.size(); i++){
-            ans = ans+temp[i];
+      
+        // cout<<col;
+        vector<vector<char>>v(numRows,vector<char>(s.size(),'*'));
+        int i   = 0;
+        int j = 0;
+        int  k = 0;
+        col = s.size();
+        while(i<numRows && j<col && k<s.size() && k>=0){
+            if(i==0){
+                while(i<numRows && k<s.size()){
+                    v[i][j] = s[k];
+                    k++;
+                   i++; 
+                }
+            }
+           
+            
+                i = numRows-2;
+                j++;
+                while(i>0 && j<col && k<s.size()){
+                  
+                    
+                    v[i][j] = s[k];
+                    i--;
+                    j++;
+                    k++;
+                 
+
+                }
+                i = 0;
+         
+                
+            
         }
-        return ans;
+      string ans  = "";
+    
+      for(int i = 0; i<numRows; i++){
+         for(int j = 0; j<col; j++){
+            if(v[i][j]!='*'){
+                ans  =  ans + v[i][j];
+            }
+         }
+      }
+      return ans ;
+
+        
     }
 };
