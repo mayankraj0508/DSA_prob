@@ -1,65 +1,91 @@
 class Solution {
 public:
-    int findunion(vector<int>& parent, int x) {
-        if (parent[x] == x) {
-            return x;
-        }
-        return parent[x] = findunion(parent, parent[x]);
-    }
-    void unions(vector<int>& parent, vector<int>& size, int a, int b) {
-        a = findunion(parent, a);
-        b = findunion(parent, b);
-        if (a == b)
-            return;
-        if (size[a] <= size[b]) {
-            size[a] = size[a] + size[b];
-            parent[a] = b;
-        } else {
-            size[b] = size[b] + size[a];
-            parent[b] = a;
-        }
-    }
-    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        vector<int> parent(accounts.size());
-        for (int i = 0; i < accounts.size(); i++) {
-            parent[i] = i;
-        }
-        vector<int> size(accounts.size(), 1);
-        unordered_map<string, int> m;
-        for (int i = 0; i < accounts.size(); i++) {
-            for (int j = 0; j < accounts[i].size(); j++) {
-                if (j != 0 && m.find(accounts[i][j]) == m.end()) {
-                    m[accounts[i][j]] = i;
-                } else {
-                    if (j != 0) {
-                        unions(parent, size, i, m[accounts[i][j]]);
-                    }
-                }
+vector<int>parent;
+vector<int>size;
+   // map of email and parent
+   int find(int a){
+       if(a==parent[a]){
+        return a;
+       }
+       return parent[a] = find(parent[a]);
+   }
+
+   void unions(int a, int b){
+      a= find(a);
+      b = find(b);
+      if(a==b) return ;
+      if(size[a]>=size[b]){
+        size[a] = size[a]+size[b];
+        parent[b]  = a;
+
+      }
+      else{
+        size[b] = size[a]+size[b];
+        parent[a]  = b;
+      }
+   }
+   unordered_map<string,vector<int>>m;
+
+    void f(vector<vector<string>>&accounts){
+        for(int i = 0; i<accounts.size(); i++){
+            for(int j = 1; j<accounts[i].size(); j++){
+                m[accounts[i][j]].push_back(i);
+               
             }
-        }
-        vector<vector<string>> ans(accounts.size());
-        for (auto x : m) {
-            int a = findunion(parent, x.second);
-            if (ans[a].size() == 0) {
-                if (accounts[a][0] != " ")
-                    ans[a].push_back(accounts[a][0]);
-            }
-            if (x.first != " ") {
-                ans[a].push_back(x.first);
-            }
-        }
-        for (auto& v : ans) {
-            if (v.size() > 1)
-                sort(v.begin() + 1, v.end());
         }
 
-        vector<vector<string>> res;
-        for (int i = 0; i < ans.size(); i++) {
-            if (ans[i].size() != 0) {
-                res.push_back(ans[i]);
+    }
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+       
+        int n = accounts.size();
+        parent.resize(n);
+        size.resize(n,1);
+        for(int i = 0; i<accounts.size(); i++){
+            parent[i] = i;
+        }
+        f(accounts);
+        for(auto x: m){
+            // x.second 
+            for(int i = 0; i<x.second.size()-1; i++){
+                unions(x.second[i],x.second[i+1]);
             }
         }
+        
+        unordered_map<int,unordered_set<string>>ma;
+        for(int i  =0; i<accounts.size(); i++){
+            int p = find(parent[i]);
+            string ps = accounts[p][0];
+        //    if(ma.find(p)==ma.end()){
+              
+                    for(int j = 1; j<accounts[p].size(); j++){
+                        ma[p].insert(accounts[p][j]);
+                    }
+                
+                
+            
        
-        return res;
+    
+                   for(int j = 1; j<accounts[i].size();j++){
+                      ma[p].insert(accounts[i][j]);
+                   }
+                
+            
+        }
+        vector<vector<string>>ans;
+        for(auto x: ma){
+        
+            vector<string>temp;
+            int key   = x.first;
+            string name = accounts[key][0];
+            temp.push_back(name);
+            for(auto p : x.second){
+                temp.push_back(p);
+            }
+            sort(temp.begin()+1,temp.end());
+            ans.push_back(temp);
+        }
+        return ans ;
+
+        
     }
 };
