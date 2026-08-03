@@ -1,42 +1,69 @@
 class Solution {
-public: 
-  
-  #define pp pair<int,pair<int,int>>
-   int swimInWater(vector<vector<int>>& grid) {
-   vector<vector<bool>>visited(grid.size(),vector<bool>(grid[0].size(),false));
-   priority_queue<pp,vector<pp>,greater<pp>>pq;
-   //grid[0][0] = true;
-   pq.push({grid[0][0],{0,0}});
-   int dir[4] = {0,0,1,-1};
-   int dic[4]  = {1,-1,0,0};
-   while(pq.size()>0){
-    auto curr = pq.top();
-    pq.pop();
-    int t =  curr.first;
-    int row = curr.second.first;
-    int col = curr.second.second;
-    if(row==grid.size()-1&&col==grid[0].size()-1){
-        return t;
-    }
-    if(visited[row][col]==true){
-        continue;
-    }
-    else{
-        visited[row][col] = true;
-        for(int i =0; i<4; i++){
-            int nr = row + dir[i];
-            int nc = col +  dic[i];
-            if(nr>=0&&nc>=0&&nr<grid.size()&&nc<grid[0].size()&&visited[nr][nc]==false){
-                  pq.push({max(t,grid[nr][nc]),{nr,nc}});
-            }
+public:
+    vector<int>size;
+    vector<int>parent;
+    int find(int a ){
+        if(parent[a]==a){
+            return a;
         }
+        return parent[a] = find(parent[a]);
+    }
+    void unions(int a, int b){
+        a = find(a);
+        b = find(b);
+        if(a==b) return ;
+        if(size[a]>=size[b]){
+            size[a] += size[b];
+            parent[b] = a;
+        }
+        else{
+            size[b] += size[a];
+            parent[a] = b;
+        }
+        return ;
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+    
+         size.resize(m*n,1);
+         parent.resize(m*n);
+         for(int i = 0; i<m*n ; i++){
+            parent[i] = i;
+         }
+         int time  = 0;
+         int first = 0;
+         int last =m*n-1;
+         while(true){
+           
+            for(int i = 0; i<m; i++){
+                for(int j = 0; j<n; j++){
+                    int ele = i*n+j;
+                    if(grid[i][j]<=time){
+                        
+                        int dx[4] = {-1,1,0,0};
+                        int dy[4] = {0,0,1,-1};
+                        for(int k = 0; k<4; k++){
+                        int nr = i+dx[k];
+                        int nc = j+dy[k];
+                        if(nr>=0 && nr<m && nc>=0 && nc<n && grid[nr][nc]<=time){
+                            int ele2 = nr*n+nc;
+                        
+                            unions(ele,ele2);
+                        }
+                        }
+
+
+                    }
+                }
+            }
+             if(find(parent[first])==find(parent[last])){
+                return time ;
+            }
+            time++;
+         }
+         return time ;
+
         
     }
-
-   }
-   return -1;
-
-
-       
-   }
 };
