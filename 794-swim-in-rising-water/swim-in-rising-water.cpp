@@ -1,5 +1,7 @@
 class Solution {
 public:
+    #define pp pair<int,int>
+
     vector<int>size;
     vector<int>parent;
     int find(int a ){
@@ -31,13 +33,24 @@ public:
          for(int i = 0; i<m*n ; i++){
             parent[i] = i;
          }
+         unordered_map<int,pp>map;
+         for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+               
+                map[grid[i][j]] = {i,j};
+            }
+         }
+
          int time  = 0;
          int first = 0;
          int last =m*n-1;
          while(true){
-           
-            for(int i = 0; i<m; i++){
-                for(int j = 0; j<n; j++){
+                    if(map.find(time)==map.end()){
+                        time++;
+                        continue;
+                    }
+                    int i = map[time].first;
+                    int j = map[time].second;
                     int ele = i*n+j;
                     if(grid[i][j]<=time){
                         
@@ -55,8 +68,7 @@ public:
 
 
                     }
-                }
-            }
+             
              if(find(parent[first])==find(parent[last])){
                 return time ;
             }
