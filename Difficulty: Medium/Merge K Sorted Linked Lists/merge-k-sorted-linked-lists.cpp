@@ -11,41 +11,40 @@ class Node {
 */
 class Solution {
   public:
-    Node*merge(Node*a, Node*b){
-        if(b==NULL){
-            return a;
+    struct cmp {
+        bool operator()(Node*a, Node*b){
+            return a->data>b->data;
         }
-        Node*d = new Node(-1);
-        Node*temp = d;
-        Node*ta = a;
-        Node*tb = b;
-        while(ta && tb){
-            if(ta->data<tb->data){
-                temp->next  = ta;
-                ta  = ta->next;
-                temp = temp->next;
-            }
-            else{
-                temp->next  = tb;
-                tb  = tb->next;
-                temp = temp->next;
-            }
-        }
-        if(ta){
-            temp->next  = ta;
-        }
-        if(tb){
-            temp->next  = tb;
-        }
-        return d->next;
-    }
+    };
+   
     Node* mergeKLists(vector<Node*>& arr) {
         // code here
-        Node*t  = NULL;
+        priority_queue<Node*,vector<Node*>,cmp>pq;
         for(int i = 0; i<arr.size(); i++){
-            t = merge(arr[i],t);
+            pq.push(arr[i]);
+            
         }
-        return t;
+        Node*ans  = new Node(-2);
+        Node*temp = ans ;
+        while(pq.size()){
+            Node*p = pq.top();
+            pq.pop();
+            if(p==NULL) continue;
+            temp->next  = p;
+            Node*c = NULL;
+            if(p){
+             c = p->next;
+            p->next  = NULL;
+            }
+            if(c){
+                pq.push(c);
+            }
+            temp = temp->next;
+            
+            
+        }
+        return ans->next;
+      
         
     }
 };
