@@ -2,33 +2,33 @@ class Solution {
 public:
    vector<string>finls;
     void f(string ans , int n,int open, int close){
-          if(close>open || open>n || close>n){
-            return ;
-
-        }
-        if(close==n && open ==n){
-              finls.push_back(ans);
-              return ;
-   
-        }
+        if(close>open) return ;
+         if(open>n) return ;
+        
         if(open==close){
-            f(ans+'(',n,open+1,close);
-        }
-        else if(open>close){
             if(open==n){
-                f(ans+')',n,open,close+1);
+                finls.push_back(ans);
+                return ;
             }
-            else{
-                f(ans+'(',n,open+1,close);
-                f(ans+')',n,open,close+1);
-            }
+            ans.push_back('(');
+            f(ans,n,open+1,close);
         }
-      
+        else{
+            ans.push_back('(');
+            f(ans,n,open+1,close);
+            if(ans.size()) ans.pop_back();
+            ans.push_back(')');
+            f(ans,n,open,close+1);
+        }
 
+        
     }
     vector<string> generateParenthesis(int n) {
-        f("",n,0,0);
+        string ans  = "";
+        
+        f(ans,n,0,0);
         return finls;
+         
         
         
     }
