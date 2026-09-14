@@ -1,31 +1,34 @@
 class Solution {
 public:
-    unordered_map<string,bool>dp;
-    bool f(string &s,string ant,int idx, vector<string>&word){
-        if(dp.find(ant)!=dp.end()){
-            return dp[ant];
+    
+     vector<int>dp;
+     bool f(string &s, vector<string>&word,int sz){
+        if(sz>s.size())  return false;
+        if(sz==s.size()){
+          return dp[sz] = true;     
         }
-        if(ant.size()>s.size()){
-            return dp[ant]=false;
-        }
-        if(s.substr(0,ant.size())!=ant){
-            return dp[ant]= false;
-        }
-        if(ant==s){
-            return dp[ant] = true;
-        }
-        for(int k = 0; k<word.size(); k++){
-            bool ans = f(s,ant+word[k],idx+1,word);
-            if(ans==true){
-                return dp[ant]= true;
+  
+       if(dp[sz]!=-1) {
+          if(dp[sz]==1 )return true;
+          return false;
+       }
+        for(int i = 0; i<word.size(); i++){
+            string p = word[i];
+            if(sz+p.size()<=s.size() && s.substr(sz,p.size())==p){
+                bool x = f(s,word,sz+p.size());
+                if(x) return dp[sz] =  true;
+
             }
+
         }
-        return dp[ant] = false;
+        return  dp[sz]  = false;
 
-    }
+
+     }
     bool wordBreak(string s, vector<string>& wordDict) {
-
-     return f(s,"",0,wordDict);
+        
+        dp.resize(s.size()+5,-1);
+        return f(s,wordDict,0);
         
     }
 };
