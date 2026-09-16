@@ -10,19 +10,7 @@
  */
 class Solution {
 public:
-    class cmp{
-       public:
-        bool operator()(ListNode*a,ListNode*b){
-            if(a && b){
-            return a->val>b->val;
-            }
-            //just for maintraing the function signature 
-            else{
-                return false;
-            }
-        }
-
-    };
+    
     #define pp pair<int,ListNode*>
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         priority_queue<pp,vector<pp>,greater<pp>>pq;
