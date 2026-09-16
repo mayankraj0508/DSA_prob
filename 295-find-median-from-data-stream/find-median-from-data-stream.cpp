@@ -1,49 +1,48 @@
 class MedianFinder {
 public:
-   vector<int>nums;
-   priority_queue<double>firsthalf;
-   priority_queue<double,vector<double>,greater<double>>secondhalf;
+    priority_queue<int>pq;
+    priority_queue<int,vector<int>,greater<int>>sq;
+
+
     MedianFinder() {
         
     }
     
     void addNum(int num) {
-        nums.push_back(num);
-        if(firsthalf.size()==0){
-            firsthalf.push(num);
+        if(pq.size()==0){
+            pq.push(num);
         }
         else{
-            if(firsthalf.top()<num){
-                secondhalf.push(num);
+            if(num>pq.top()){
+                sq.push(num);
             }
             else{
-                firsthalf.push(num);
-                
+                pq.push(num);
             }
-            while(firsthalf.size()>secondhalf.size()+1){
-                secondhalf.push(firsthalf.top());
-                firsthalf.pop();
+            while(pq.size()>sq.size()+1){
+                int x = pq.top();
+                pq.pop();
+                sq.push(x);
             }
-            while(secondhalf.size()>firsthalf.size()+1){
-              firsthalf.push(secondhalf.top());
-              secondhalf.pop();
+            while(sq.size()>pq.size()+1){
+                int x = sq.top();
+                sq.pop();
+                pq.push(x);
+            }
         }
-
-        }
-        return ;
-      
         
     }
     
     double findMedian() {
-        if(firsthalf.size()==secondhalf.size()){
-            return (firsthalf.top()+secondhalf.top())/2.0;
+        int total = pq.size()+sq.size();
+        if(total%2==0){
+            double ans  = (pq.top()+sq.top())/2.0;
+            return ans;
         }
         else{
-            if(secondhalf.size()>firsthalf.size()){
-                return secondhalf.top();
-            }
-            return firsthalf.top();
+            if(pq.size()>sq.size()) return (double) pq.top();
+            else return sq.top();
+            
         }
         
     }
