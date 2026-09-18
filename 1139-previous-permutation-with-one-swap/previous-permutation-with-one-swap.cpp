@@ -18,12 +18,10 @@ public:
                 mn = arr[j];
                 idx2 = j;
                }
-
-            }
+        
         }
-        if(idx2==-1) return arr;
-        swap(arr[idx],arr[idx2]);
-   //   reverse(arr.begin()+idx+1,arr.end());
+        }
+         swap(arr[idx],arr[idx2]);
         return arr;
 
         
