@@ -36,10 +36,11 @@ public:
             
          }
          int ans = 0;
-         for(int i =0; i<n; i++){
-            int right = nse[i]-i-1;
-            int left = i-pse[i]-1;
-            ans  = max(ans, nums[i] + (left+right)*nums[i]);
+         for(int i = 0; i<nums.size(); i++){
+            int right = nse[i]-i;
+            int left  = i-pse[i]-1;
+            ans  = max(ans, (nums[i]*(left+right)));
+
          }
          return ans;
         
