@@ -21,15 +21,21 @@ public:
             st.push(i);
         }
         vector<int>ans;
-        for(int i =0; i<=n-k; i++){
-            int j = i;
-            while(nge[j]<i+k && nge[j]!=-1){
-                j = nge[j];
+        for(int i = 0; i<nums.size()-k+1; i++){
+            int x = i;
+            while(nge[x]<i+k && nge[x]!=-1 ){
+                x = nge[x];
+
             }
-            if(j!=-1)
-            ans.push_back(nums[j]);
+            if(x!=-1){
+                ans.push_back(nums[x]);
+            }
+            else{
+                ans.push_back(nums[i]);
+            }
+            
         }
-        return ans;
+        return ans ;
         
     }
 };
