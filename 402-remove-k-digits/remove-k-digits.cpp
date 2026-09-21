@@ -6,33 +6,28 @@ public:
             while(st.size()>0 && st.top()>nums[i] && k){
                 st.pop();
                 k--;
-
             }
             st.push(nums[i]);
-
         }
-           while (st.size() && k > 0) {
+       
+         while (st.size() && k > 0) {
             st.pop();
             k--;
-        }
+         }
        string ans = "";
        while(st.size()){
           ans.push_back(st.top());
           st.pop();
        }
-       reverse(ans.begin(),ans.end());
-        int i =0; 
-        while(i<ans.size() && ans[i]=='0'){
-            i++;
-        }
-       
-        string t  = ans.substr(i);
-       
-        if(t==""){
-            return "0";
-        }
-        return t;
 
-        
+        int i = ans.size()-1;
+        while(i>=0 && ans[i]=='0'){
+            ans.pop_back();
+
+            i--;
+        }
+       reverse(ans.begin(),ans.end());
+        if(ans.size()==0) return "0";
+        return ans;
     }
 };
